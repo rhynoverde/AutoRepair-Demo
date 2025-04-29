@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+  <title>Auto-Repair Demo – Willow Ridge Autoworks</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Cropper & SweetAlert2 (used in Technician flow and sharing alerts) -->
+  <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- Holds an ORIGINAL photo the moment it’s captured / uploaded -->
+  <img id="originalPhoto" src="" style="display:none;" alt="original">
+
+  <!-- ── STEP 0 • Role-Select ─────────────────────────────────────── -->
+  <section id="roleSelect" class="step active">
+    <h2 class="major-title">Willow Ridge Autoworks Demo</h2>
+    <div class="role-buttons">
+      <button id="techDemoBtn"      class="role-btn">Technician Demo</button>
+      <button id="frontDeskDemoBtn" class="role-btn">Front Desk Demo</button>
+      <button id="customerDemoBtn"  class="role-btn">Customer Demo</button>
+    </div>
+  </section>
+
+  <!-- ── STEP 1 • Technician – Capture Photo ──────────────────────── -->
+  <section id="techPhotoStep" class="step">
+    <h2>Take / Upload Repair Photo</h2>
+
+    <div id="photoOptions" class="photo-options">
+      <button class="photo-option" data-option="take"><span class="icon">📷</span><span class="label">Take Photo</span></button>
+      <button class="photo-option" data-option="upload"><span class="icon">⬆️</span><span class="label">Upload Photo</span></button>
+      <button class="photo-option" data-option="url"><span class="icon">🔗</span><span class="label">Paste Image URL</span></button>
+    </div>
+
+    <!-- camera -->
+    <div id="takePhotoSection" class="photo-section" style="display:none;">
+      <video id="cameraPreview" autoplay playsinline muted webkit-playsinline></video>
+      <div id="cameraOverlay"><div class="hole"></div></div>
+      <div class="camera-controls">
+        <button id="swapCamera"  class="icon-btn">↺</button>
+        <button id="capturePhoto" class="shutter-btn"></button>
+      </div>
+      <button class="backToTechStart back-btn">← Back</button>
+    </div>
+
+    <!-- upload -->
+    <div id="uploadPhotoSection" class="photo-section" style="display:none;">
+      <input type="file" id="uploadInput" accept="image/*">
+      <label for="uploadInput" class="upload-label">Choose Photo</label>
+      <button class="backToTechStart back-btn">← Back</button>
+    </div>
+
+    <!-- url -->
+    <div id="urlPhotoSection" class="photo-section" style="display:none;">
+      <label for="imageUrlInput" class="input-label">Image URL</label>
+      <input type="url" id="imageUrlInput" placeholder="https://example.com/photo.jpg">
+      <button id="loadUrlImage">Load Image</button>
+      <button class="backToTechStart back-btn">← Back</button>
+    </div>
+
+    <!-- crop -->
+    <div id="cropSection" class="photo-section" style="display:none;">
+      <h3>Crop Photo</h3>
+      <div id="cropContainer"><img id="cropImage" src="" alt="crop"></div>
+      <div class="crop-buttons">
+        <button id="cropButton">Crop</button>
+        <button id="fitEntireButton">Fit Entire</button>
+        <button id="changePhoto">Change Photo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STEP 2 • Technician – Vehicle Info ───────────────────────── -->
+  <section id="techInfoStep" class="step">
+    <h2>Vehicle Details (optional)</h2>
+
+    <label class="input-label" for="vinInput">VIN</label>
+    <input id="vinInput" type="text" placeholder="e.g. 1HGCM82633A004352">
+
+    <button id="decodeVinBtn" class="small-btn">Decode VIN (demo)</button>
+
+    <div class="flex-row">
+      <div class="flex-half">
+        <label class="input-label" for="yearInput">Year</label>
+        <input id="yearInput"  type="text" placeholder="2015">
+      </div>
+      <div class="flex-half">
+        <label class="input-label" for="colorInput">Color</label>
+        <input id="colorInput" type="text" placeholder="Silver">
+      </div>
+    </div>
+
+    <label class="input-label" for="makeInput">Make</label>
+    <input id="makeInput"  type="text" placeholder="Honda">
+
+    <label class="input-label" for="modelInput">Model</label>
+    <input id="modelInput" type="text" placeholder="Civic">
+
+    <label class="input-label" for="engineInput">Engine Size</label>
+    <input id="engineInput" type="text" placeholder="2.0 L">
+
+    <label class="input-label" for="repairSelect">Repair Type</label>
+    <select id="repairSelect"></select>
+
+    <button id="saveRepairBtn">Submit / Save Repair (demo)</button>
+    <button id="backToTechPhoto" class="back-btn">← Back</button>
+  </section>
+
+  <!-- ── STEP 3 • Front-Desk – Gallery ─────────────────────────────── -->
+  <section id="frontDeskGallery" class="step">
+    <h2>Before-and-After Gallery</h2>
+    <div id="repairGallery" class="accordion"></div>
+    <button id="frontDeskBack" class="back-btn">← Back</button>
+  </section>
+
+  <!-- ── STEP 4 • Front-Desk – Detail / Share ──────────────────────── -->
+  <section id="frontDeskDetail" class="step">
+    <h2 id="detailHeading">Repair Details</h2>
+
+    <div class="ba-container">
+      <img id="detailBefore" class="beforeImg" src="" alt="before">
+      <img id="detailAfter"  class="afterImg"  src="" alt="after">
+    </div>
+
+    <textarea id="shareMsg" rows="6"></textarea>
+
+    <button id="copyMsgBtn">Copy Message & Link</button>
+    <button id="showQRBtn">Show QR Code</button>
+    <button id="detailBack" class="back-btn">← Back to Gallery</button>
+  </section>
+
+  <!-- ── STEP 5 • Customer – Share Choice ──────────────────────────── -->
+  <section id="customerChoice" class="step">
+    <h2>Choose How to Share</h2>
+    <button id="separateBtn">Share BEFORE then AFTER (Stories)</button>
+    <button id="combinedBtn">Share Combined Image (Posts)</button>
+    <button id="custBack" class="back-btn">← Back</button>
+  </section>
+
+  <!-- ── STEP 5a • Customer – Before / After separate ──────────────── -->
+  <section id="custSeparate" class="step">
+    <h2 id="custSeparateHeading">Share This Photo</h2>
+    <img id="custSeparateImg" class="shareImg" src="" alt="share">
+    <button id="nextSeparateBtn">Next</button>
+  </section>
+
+  <!-- ── STEP 5b • Customer – Combined Image ───────────────────────── -->
+  <section id="custCombined" class="step">
+    <h2>Share Combined Before-After</h2>
+    <img id="combinedImg" class="shareImg" src="" alt="combined">
+    <button id="combinedDoneBtn">Done</button>
+  </section>
+
+  <!-- ── STEP 6 • QR modal (front-desk) ────────────────────────────── -->
+  <div id="qrModal" class="qr-modal">
+    <div class="qr-wrap">
+      <p class="qr-link" id="qrLinkTxt">justshar.ing/demo</p>
+      <img id="qrImg" src="" alt="QR">
+      <button id="closeQR" class="small-btn">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<footer id="pageFooter"><span class="footer-version">Version ar-1.0.0</span></footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
+<script src="scripts.js"></script>
+</body>
+</html>

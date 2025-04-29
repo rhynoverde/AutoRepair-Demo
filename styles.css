@@ -1,0 +1,121 @@
+/*  styles.css  – Auto-Repair Demo  (Version ar-1.0.0)
+   =============================================================== */
+
+/* ── design tokens ─────────────────────────────────────────────── */
+:root{
+    --accent:      #244d3d;  /* deep green */
+    --accent-dark: #173427;
+    --accent-d2:   #0e2017;
+  
+    --blue:        #005296;
+    --blue-dark:   #003d6d;
+  
+    --light-bg:    #f2f7f5;
+    --dark-text:   #1d1d1d;
+  }
+  
+  /* ── reset / layout ─────────────────────────────────────────────── */
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--light-bg);
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    color:var(--dark-text);
+    display:flex;flex-direction:column;align-items:center;
+    padding:10px;min-height:100vh;
+  }
+  .container{
+    background:#fff;border-radius:8px;width:100%;max-width:600px;
+    max-height:90vh;overflow-y:auto;
+    box-shadow:0 4px 8px rgba(0,0,0,.12);
+    margin:10px 0 60px;
+    position:relative;
+  }
+  .step{display:none;padding:20px}
+  .step.active{display:block}
+  .major-title{text-align:center;margin-bottom:25px;font-size:24px}
+  
+  /* ── role buttons ──────────────────────────────────────────────── */
+  .role-buttons{display:flex;flex-direction:column;gap:15px}
+  .role-btn{
+    background:var(--accent);color:#fff;border:none;padding:15px;font-size:18px;
+    border-radius:4px;cursor:pointer;transition:background .25s
+  }
+  .role-btn:hover{background:var(--accent-dark)}
+  .role-btn:active{background:var(--accent-d2)}
+  
+  /* ── back / small buttons ──────────────────────────────────────── */
+  .back-btn,
+  .small-btn{
+    background:var(--blue);color:#fff;border:none;padding:12px;font-size:14px;
+    border-radius:4px;cursor:pointer;margin-top:15px;width:100%;
+  }
+  .back-btn:hover,
+  .small-btn:hover{background:var(--blue-dark)}
+  
+  /* ── input fields ──────────────────────────────────────────────── */
+  input,select,textarea{
+    width:100%;padding:12px;font-size:16px;border:1px solid #bbb;border-radius:4px;
+    margin-bottom:15px;font-family:'Helvetica Neue',Arial,sans-serif;
+  }
+  textarea{resize:vertical}
+  
+  .input-label{display:block;margin-bottom:4px;font-weight:600;font-size:14px}
+  
+  /* ── flex helpers ──────────────────────────────────────────────── */
+  .flex-row{display:flex;gap:10px}
+  .flex-half{flex:1}
+  
+  /* ── photo option tiles (technician) ───────────────────────────── */
+  .photo-options{display:block;margin-bottom:15px}
+  .photo-option{
+    display:flex;align-items:center;padding:15px;background:var(--blue);
+    color:#fff;border-radius:4px;margin:10px 0;cursor:pointer
+  }
+  .photo-option:hover{background:var(--blue-dark)}
+  .photo-option .icon{font-size:24px;margin-right:10px}
+  
+  /* ── camera & crop ─────────────────────────────────────────────── */
+  #cameraPreview{width:100%;height:280px;background:#000;object-fit:cover;border-radius:4px}
+  .camera-controls{display:flex;justify-content:center;gap:25px;margin-top:10px}
+  .icon-btn{width:50px;height:50px;background:rgba(0,0,0,.6);border-radius:50%;color:#fff;font-size:22px;border:none}
+  .shutter-btn{width:70px;height:70px;border:5px solid #eee;border-radius:50%;background:#fff}
+  .photo-section{margin-top:20px;text-align:center}
+  .upload-label{
+    display:block;width:100%;text-align:center;padding:15px;background:var(--blue);
+    color:#fff;border-radius:4px;margin-bottom:15px;cursor:pointer
+  }
+  
+  /* crop container */
+  #cropContainer{width:300px;height:194px;margin:0 auto 15px;border:2px solid #ddd;border-radius:4px;overflow:hidden}
+  
+  /* ── gallery / accordion ───────────────────────────────────────── */
+  .accordion details{border:1px solid #ccc;border-radius:4px;margin-bottom:10px;padding:8px}
+  .accordion summary{font-weight:600;cursor:pointer;font-size:16px}
+  .ba-card{display:flex;gap:10px;margin-top:8px}
+  .ba-card img{width:48%;border-radius:4px;border:2px solid #eee;object-fit:cover}
+  
+  /* ── before-after detail ───────────────────────────────────────── */
+  .ba-container{display:flex;gap:10px;margin:15px 0}
+  .ba-container img{width:50%;border-radius:6px;border:2px solid #ddd;object-fit:cover}
+  .shareImg{max-width:100%;border-radius:6px;border:2px solid #ddd;margin-bottom:15px}
+  
+  /* ── QR modal ──────────────────────────────────────────────────── */
+  .qr-modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;
+    align-items:center;justify-content:center;z-index:99
+  }
+  .qr-modal.active{display:flex}
+  .qr-wrap{background:#fff;padding:20px;border-radius:6px;text-align:center;max-width:260px}
+  .qr-wrap img{width:180px;margin:10px auto}
+  .qr-link{font-weight:600;margin-bottom:6px}
+  
+  /* ── footer ─────────────────────────────────────────────────────── */
+  #pageFooter{
+    width:100%;padding:10px;text-align:center;background:#eee;
+    font-size:14px;position:fixed;bottom:0;left:0
+  }
+  .footer-version{color:#555}
+  
+  /* hide file input */
+  #uploadInput{display:none}
+  
